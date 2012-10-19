@@ -128,9 +128,10 @@ for time_matrix in time_matrix_list:
     row,col=time_matrix.split('.')[0].split('_')[2:4]
     row=int(row)
     col=int(col)
-    timesblock=numpy.genfromtxt(os.path.join(data_dir,time_matrix))
-    print row,col
-    times[row*10:(row+1)*10,col*10:(col+1)*10]=timesblock[0:10,0:10]
+    timesblock=numpy.loadtxt(os.path.join(data_dir,time_matrix),ndmin=2)
+    print("row {row}, col {col}, block shape = {blockshape}").format(row=row,col=col,blockshape=timesblock.shape)
+    block_rows,block_cols=timesblock.shape
+    times[row*10:row*10+block_rows,col*10:col*10+block_cols]=timesblock
 check=numpy.zeros((len(stations),len(stations)),dtype=numpy.int32)
 check_matrix_list=[a for a in os.listdir(data_dir) if a.startswith('check_matrix') and a.endswith('.txt')]
 for check_matrix in check_matrix_list:
